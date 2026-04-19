@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+{% block title %}Nuevo Pacto de Honorarios{% endblock %}
+{% block topbar_title %}<i class="bi bi-file-earmark-text me-2"></i>Nuevo Pacto de Honorarios{% endblock %}
+{% block topbar_actions %}
+  <a href="{{ url_for('honorarios_list') }}" class="btn btn-sm btn-outline-secondary">
+    <i class="bi bi-arrow-left"></i> Volver
+  </a>
+{% endblock %}
+
+{% block content %}
+<div class="card border-0 shadow-sm" style="max-width:640px">
+  <div class="card-body">
+    <form method="POST">
+      <div class="row g-3">
+        <div class="col-12">
+          <label class="form-label small fw-bold">Expediente *</label>
+          <select name="expediente_id" class="form-select" required>
+            <option value="">— Seleccionar —</option>
+            {% for e in expedientes %}
+              <option value="{{ e.id }}" {{ 'selected' if exp_id and exp_id|int == e.id }}>
+                {{ e.codigo }} — {{ e.caratula[:80] }}
+              </option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="col-md-6">
+          <label class="form-label small fw-bold">Tipo de Honorario *</label>
+          <select name="tipo" class="form-select" required>
+            {% for t in tipos %}
+              <option value="{{ t }}">{{ t }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="col-md-6">
+          <label class="form-label small fw-bold">Abogado/s *</label>
+          <select name="abogado" class="form-select" required>
+            {% for r in responsables %}
+              <option value="{{ r }}">{{ r }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="col-md-6">
+          <label class="form-label small fw-bold">Monto Pactado ($)</label>
+          <input type="number" name="monto" class="form-control" step="0.01" placeholder="0"/>
+        </div>
+        <div class="col-md-6">
+          <label class="form-label small fw-bold">% Cuota Litis</label>
+          <input type="number" name="porcentaje" class="form-control" step="0.01" placeholder="Ej: 20"/>
+        </div>
+        <div class="col-md-6">
+          <label class="form-label small fw-bold">Fecha del Pacto</label>
+          <input type="text" name="fecha_pacto" class="form-control" placeholder="DD/MM/AAAA"/>
+        </div>
+        <div class="col-12">
+          <label class="form-label small fw-bold">Notas</label>
+          <textarea name="notas" class="form-control" rows="3"
+            placeholder="Detalle de cuotas, gastos, condiciones, etc."></textarea>
+        </div>
+      </div>
+      <div class="mt-4 d-flex gap-2">
+        <button type="submit" class="btn btn-success">
+          <i class="bi bi-save me-1"></i>Registrar Pacto
+        </button>
+        <a href="{{ url_for('honorarios_list') }}" class="btn btn-outline-secondary">Cancelar</a>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}
